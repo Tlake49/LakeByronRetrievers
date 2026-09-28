@@ -98,7 +98,7 @@ export function SiteFooter() {
 export function PageHero({ eyebrow, title, copy, image, imageAlt }: { eyebrow: string; title: string; copy: string; image: string; imageAlt: string }) {
   return (
     <section className="page-hero">
-      <Image src={sitePath(image)} alt={imageAlt} fill sizes="100vw" className="page-hero-image" priority />
+      <div className="page-hero-image" role="img" aria-label={imageAlt} style={{ backgroundImage: `url("${sitePath(image)}")` }} />
       <div className="page-hero-shade" />
       <div className="page-hero-copy">
         <p className="eyebrow reveal-delay-1" data-reveal>{eyebrow}</p>

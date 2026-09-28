@@ -22,7 +22,7 @@ export default function Home() {
     <main>
       <SiteHeader />
       <section className="hero">
-        <Image className="hero-image" src={sitePath("/images/retriever-hold.jpg")} alt="A trained retriever holding a pheasant in tall South Dakota grass" fill sizes="100vw" priority />
+        <div className="hero-image" role="img" aria-label="A trained retriever holding a pheasant in tall South Dakota grass" style={{ backgroundImage: `url("${sitePath("/images/retriever-hold.jpg")}")` }} />
         <div className="hero-shade" />
         <div className="hero-copy">
           <p className="eyebrow reveal-delay-1" data-reveal>Lake Byron, South Dakota · Bird dog country</p>
@@ -68,7 +68,7 @@ export default function Home() {
 
       <section className="feature-story">
         <div className="feature-image-wrap">
-          <Image src={sitePath("/images/facility/water-grounds.jpg")} alt="Open water and prairie training grounds near Lake Byron" fill sizes="(max-width: 800px) 100vw, 55vw" className="feature-image" />
+          <div className="feature-image" role="img" aria-label="Open water and prairie training grounds near Lake Byron" style={{ backgroundImage: `url("${sitePath("/images/facility/water-grounds.jpg")}")` }} />
           <span className="photo-caption">TRAINING GROUNDS / LAKE BYRON, SOUTH DAKOTA</span>
         </div>
         <div className="feature-copy">

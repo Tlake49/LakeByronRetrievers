@@ -34,7 +34,7 @@ export default function AboutPage() {
   return (
     <main>
       <SiteHeader />
-      <PageHero eyebrow="Trainer / guide / dog man" title="About us & our facilities" copy="For Jackson Lake, retrievers are not a side interest. They are a profession, a passion and a daily way of life." image="/images/training-handoff.jpg" imageAlt="Jackson working with a young retriever in the field" />
+      <PageHero eyebrow="Trainer / guide / dog man" title="About us & our facilities" copy="For Jackson Lake, retrievers are not a side interest. They are a profession, a passion and a daily way of life." image="/images/facility/open-grounds.jpg" imageAlt="Open South Dakota training land near Lake Byron" />
       <section className="section about-jackson">
         <div>
           <p className="kicker">Meet Jackson Lake</p>

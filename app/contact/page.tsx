@@ -17,6 +17,7 @@ export default function ContactPage() {
           <a className="big-contact" href="tel:+16052210649">(605) 221-0649</a>
           <a className="big-contact" href="mailto:info@lakeslodgesd.com">info@lakeslodgesd.com</a>
           <p className="contact-note">Call or email to ask about program fit, timing, current capacity and boarding availability.</p>
+          <button className="button button-primary contact-inquiry-button" type="button" data-inquiry-program="Not sure yet">Start a training inquiry</button>
         </div>
         <aside className="contact-card">
           <p className="label">Training location</p>

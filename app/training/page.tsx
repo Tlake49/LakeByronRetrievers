@@ -1,5 +1,4 @@
 import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
-import { sitePath } from "../sitePath";
 
 export const metadata = {
   title: "Training Programs",
@@ -59,7 +58,7 @@ export default function TrainingPage() {
         <div>
           <p>For owners who want a hunting or competition dog but do not want to manage every stage of early puppy development, Jackson can begin the process from eight weeks old.</p>
           <p>This is distinct from Puppy Head Start: it is a more complete raising-and-starting path focused on building the daily habits, confidence, exposure and foundation a young working dog needs before formal gun-dog training.</p>
-          <a className="button button-dark" href="mailto:info@lakeslodgesd.com?subject=Lake%20Byron%20Retrievers%20Inquiry%3A%20Puppy%20Raising%20%26%20Starting">Inquire about puppy raising</a>
+          <button className="button button-dark" type="button" data-inquiry-program="Puppy Raising & Starting">Inquire about puppy raising</button>
         </div>
       </section>
       <section className="section training-list">
@@ -71,7 +70,7 @@ export default function TrainingPage() {
               <h2>{program.title}</h2>
               <p className="program-duration">{program.duration}</p>
               <p>{program.intro}</p>
-              <a className="button button-dark program-inquire" href={`mailto:info@lakeslodgesd.com?subject=${encodeURIComponent(`Lake Byron Retrievers Inquiry: ${program.title}`)}`}>Inquire about {program.title}</a>
+              <button className="button button-dark program-inquire" type="button" data-inquiry-program={program.title}>Inquire about {program.title}</button>
             </div>
             <ul>
               {program.items.map((item) => <li key={item}>{item}</li>)}
@@ -88,7 +87,7 @@ export default function TrainingPage() {
       </section>
       <section className="orange-cta">
         <div><p className="kicker">Every dog is different</p><h2>Let’s find the right starting point.</h2></div>
-        <a className="button button-dark" href={sitePath("/contact/")}>Ask about availability</a>
+        <button className="button button-dark" type="button" data-inquiry-program="Not sure yet">Ask about availability</button>
       </section>
       <SiteFooter />
     </main>
