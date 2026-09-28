@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { SiteFooter, SiteHeader } from "./components/SiteChrome";
+import { sitePath } from "./sitePath";
 
 export const metadata = {
   title: "Lake Byron Retrievers | Gun Dog Training in South Dakota",
@@ -21,7 +22,7 @@ export default function Home() {
     <main>
       <SiteHeader />
       <section className="hero">
-        <Image className="hero-image" src="/images/retriever-hold.jpg" alt="A trained retriever holding a pheasant in tall South Dakota grass" fill sizes="100vw" priority />
+        <Image className="hero-image" src={sitePath("/images/retriever-hold.jpg")} alt="A trained retriever holding a pheasant in tall South Dakota grass" fill sizes="100vw" priority />
         <div className="hero-shade" />
         <div className="hero-copy">
           <p className="eyebrow reveal-delay-1" data-reveal>Lake Byron, South Dakota · Bird dog country</p>
@@ -30,7 +31,7 @@ export default function Home() {
             <div className="hero-support reveal-delay-3" data-reveal>
               <p className="lede">Practical, purpose-driven retriever training by hunting guide and dog trainer Jackson Lake.</p>
               <div className="hero-actions">
-                <a className="button button-primary" href="/training/">View training programs</a>
+                <a className="button button-primary" href={sitePath("/training/")}>View training programs</a>
                 <a className="button button-ghost" href="tel:+16052210649">Call Jackson</a>
               </div>
             </div>
@@ -54,7 +55,7 @@ export default function Home() {
         </div>
         <div className="program-grid">
           {programs.map((program) => (
-            <a className="program-card" href={program.href} key={program.name} aria-label={`View ${program.name} details`}>
+            <a className="program-card" href={sitePath(program.href)} key={program.name} aria-label={`View ${program.name} details`}>
               <span className="card-no">{program.no}</span>
               <p className="program-age">{program.age}</p>
               <h3>{program.name}</h3>
@@ -67,7 +68,7 @@ export default function Home() {
 
       <section className="feature-story">
         <div className="feature-image-wrap">
-          <Image src="/images/facility/water-grounds.jpg" alt="Open water and prairie training grounds near Lake Byron" fill sizes="(max-width: 800px) 100vw, 55vw" className="feature-image" />
+          <Image src={sitePath("/images/facility/water-grounds.jpg")} alt="Open water and prairie training grounds near Lake Byron" fill sizes="(max-width: 800px) 100vw, 55vw" className="feature-image" />
           <span className="photo-caption">TRAINING GROUNDS / LAKE BYRON, SOUTH DAKOTA</span>
         </div>
         <div className="feature-copy">
@@ -81,12 +82,12 @@ export default function Home() {
             <li>Secure, fenced-in play spaces</li>
             <li>Elevated, easy-to-sanitize Kuranda beds</li>
           </ul>
-          <a className="text-link" href="/about/">Tour the facility <span aria-hidden="true">→</span></a>
+          <a className="text-link" href={sitePath("/about/")}>Tour the facility <span aria-hidden="true">→</span></a>
         </div>
       </section>
 
       <section className="lodge-band">
-        <div className="lodge-logo"><Image src="/images/lakes-lodge-logo.webp" alt="Lake’s Lodge" width={140} height={140} /></div>
+        <div className="lodge-logo"><Image src={sitePath("/images/lakes-lodge-logo.webp")} alt="Lake’s Lodge" width={140} height={140} /></div>
         <div>
           <p className="kicker">Born from the hunt</p>
           <h2>Connected to Lake’s Lodge.</h2>

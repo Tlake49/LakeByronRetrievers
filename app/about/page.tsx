@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { sitePath } from "../sitePath";
 
 export const metadata = {
   title: "About Jackson & the Facility",
@@ -61,7 +62,7 @@ export default function AboutPage() {
       <section className="facility-gallery" aria-label="Lake Byron Retrievers facility gallery">
         {facilityPhotos.map(({ src, alt, caption, className = "" }) => (
           <figure className={`facility-photo ${className}`} key={src}>
-            <Image src={src} alt={alt} fill sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 25vw" />
+            <Image src={sitePath(src)} alt={alt} fill sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 25vw" />
             <figcaption>{caption}</figcaption>
           </figure>
         ))}
@@ -75,7 +76,7 @@ export default function AboutPage() {
           <details><summary>Where does field training happen?</summary><p>On large open grounds around Lake Byron, with varied prairie cover suited to bird-retrieving work and realistic hunting scenarios.</p></details>
         </div>
       </section>
-      <section className="orange-cta"><div><p className="kicker">Come see the ground</p><h2>Start with a conversation.</h2></div><a className="button button-dark" href="/contact/">Contact Jackson</a></section>
+      <section className="orange-cta"><div><p className="kicker">Come see the ground</p><h2>Start with a conversation.</h2></div><a className="button button-dark" href={sitePath("/contact/")}>Contact Jackson</a></section>
       <SiteFooter />
     </main>
   );

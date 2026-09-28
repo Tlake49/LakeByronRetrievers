@@ -1,4 +1,5 @@
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { sitePath } from "../sitePath";
 
 export const metadata = {
   title: "Field Goods — Coming Soon",
@@ -15,7 +16,7 @@ export default function MerchPage() {
         <div className="merch-type">LBR</div>
         <h1 className="reveal-delay-2" data-reveal>Gear for<br />dog people.</h1>
         <p className="reveal-delay-3" data-reveal>A small run of Lake Byron Retrievers hats, shirts and field goods is in the works.</p>
-        <a className="button button-dark reveal-delay-4" data-reveal href="/">Back to the field</a>
+        <a className="button button-dark reveal-delay-4" data-reveal href={sitePath("/")}>Back to the field</a>
         <span className="shopify-note">Future Shopify storefront placeholder</span>
       </section>
       <SiteFooter />

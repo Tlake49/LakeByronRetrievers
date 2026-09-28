@@ -1,4 +1,5 @@
 import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { sitePath } from "../sitePath";
 
 export const metadata = {
   title: "Training Programs",
@@ -87,7 +88,7 @@ export default function TrainingPage() {
       </section>
       <section className="orange-cta">
         <div><p className="kicker">Every dog is different</p><h2>Let’s find the right starting point.</h2></div>
-        <a className="button button-dark" href="/contact/">Ask about availability</a>
+        <a className="button button-dark" href={sitePath("/contact/")}>Ask about availability</a>
       </section>
       <SiteFooter />
     </main>
