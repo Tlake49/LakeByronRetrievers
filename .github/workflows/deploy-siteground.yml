@@ -1,0 +1,116 @@
+name: Deploy static site to SiteGround
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: siteground-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-dry-run:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://lakebyronretrievers.com
+    env:
+      NEXT_PUBLIC_SITE_URL: https://lakebyronretrievers.com
+      NEXT_PUBLIC_CONTACT_FORM_ENABLED: "false"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build production site
+        run: pnpm build
+
+      - name: Install deployment tools
+        run: sudo apt-get update && sudo apt-get install -y rsync ffmpeg
+
+      - name: Optimize deployment media
+        run: pnpm optimize:deploy-media
+
+      - name: Validate deployment settings
+        shell: bash
+        env:
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_USER: ${{ secrets.SG_USER }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+          SG_REMOTE_PATH: ${{ secrets.SG_REMOTE_PATH }}
+          SG_SSH_KEY: ${{ secrets.SG_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          [[ -n "$SG_HOST" && "$SG_HOST" != *"@"* && "$SG_HOST" != *":"* && "$SG_HOST" != ssh* ]] || { echo "SG_HOST must contain only the hostname."; exit 1; }
+          [[ -n "$SG_USER" && "$SG_USER" != *"@"* ]] || { echo "SG_USER must contain only the username."; exit 1; }
+          [[ "$SG_PORT" =~ ^[0-9]+$ ]] || { echo "SG_PORT must contain only a port number."; exit 1; }
+          [[ "$SG_REMOTE_PATH" == "/home/customer/www/lakebyronretrievers.com/public_html/" ]] || { echo "SG_REMOTE_PATH does not match the approved production directory."; exit 1; }
+          [[ "$SG_SSH_KEY" == *"BEGIN OPENSSH PRIVATE KEY"* && "$SG_SSH_KEY" == *"END OPENSSH PRIVATE KEY"* ]] || { echo "SG_SSH_KEY is missing or malformed."; exit 1; }
+          test -f dist/client/index.html || { echo "Static build output is missing."; exit 1; }
+
+      - name: Configure SSH
+        shell: bash
+        env:
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+          SG_SSH_KEY: ${{ secrets.SG_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SG_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 -p "$SG_PORT" "$SG_HOST" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          actual_fingerprint="$(ssh-keygen -lf ~/.ssh/known_hosts | awk '{print $2}')"
+          expected_fingerprint="SHA256:sOQ3ToDjBvmoLIi9gtXV9D89WN9Q+Tw3eL31Y/44rj4"
+          [[ "$actual_fingerprint" == "$expected_fingerprint" ]] || { echo "SiteGround host fingerprint did not match."; exit 1; }
+
+      - name: Verify SiteGround destination
+        shell: bash
+        env:
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_USER: ${{ secrets.SG_USER }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+          SG_REMOTE_PATH: ${{ secrets.SG_REMOTE_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_ed25519 -p "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "$SG_USER@$SG_HOST" \
+            "test -d '$SG_REMOTE_PATH' && test -w '$SG_REMOTE_PATH' && printf 'SiteGround destination is ready.\\n'"
+
+      - name: Preview SiteGround deployment
+        shell: bash
+        env:
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_USER: ${{ secrets.SG_USER }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+          SG_REMOTE_PATH: ${{ secrets.SG_REMOTE_PATH }}
+        run: |
+          set -euo pipefail
+          rsync -avz --dry-run --delete --itemize-changes \
+            --exclude='.well-known/' \
+            --exclude='.assetsignore' \
+            --exclude='.nojekyll' \
+            --exclude='.vite/' \
+            --exclude='_headers' \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $SG_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes" \
+            dist/client/ \
+            "$SG_USER@$SG_HOST:$SG_REMOTE_PATH"
