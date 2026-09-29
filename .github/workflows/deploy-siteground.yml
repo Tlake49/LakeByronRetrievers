@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-dry-run:
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment:
       name: production
@@ -96,7 +96,7 @@ jobs:
             "$SG_USER@$SG_HOST" \
             "test -d '$SG_REMOTE_PATH' && test -w '$SG_REMOTE_PATH' && printf 'SiteGround destination is ready.\\n'"
 
-      - name: Preview SiteGround deployment
+      - name: Deploy to SiteGround
         shell: bash
         env:
           SG_HOST: ${{ secrets.SG_HOST }}
@@ -105,7 +105,7 @@ jobs:
           SG_REMOTE_PATH: ${{ secrets.SG_REMOTE_PATH }}
         run: |
           set -euo pipefail
-          rsync -avz --dry-run --delete --itemize-changes \
+          rsync -avz --delete --itemize-changes \
             --exclude='.well-known/' \
             --exclude='.assetsignore' \
             --exclude='.nojekyll' \
