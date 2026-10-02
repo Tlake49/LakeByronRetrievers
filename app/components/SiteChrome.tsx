@@ -65,6 +65,7 @@ export function SiteHeader() {
         <a href={sitePath("/")} onClick={() => setMenuOpen(false)}>Home</a>
         <a href={sitePath("/training/")} onClick={() => setMenuOpen(false)}>Training</a>
         <a href={sitePath("/about/")} onClick={() => setMenuOpen(false)}>About & Facility</a>
+        <a href={sitePath("/legacy-sires/")} onClick={() => setMenuOpen(false)}>Legacy Sires</a>
         <a href={sitePath("/contact/")} onClick={() => setMenuOpen(false)}>Contact</a>
         <a href={sitePath("/merch/")} onClick={() => setMenuOpen(false)}>Merch</a>
       </nav>
@@ -82,6 +83,7 @@ export function SiteFooter() {
       <div className="footer-links">
         <p className="label">Navigate</p>
         <a href={sitePath("/training/")}>Training programs</a>
+        <a href={sitePath("/legacy-sires/")}>Legacy sires</a>
         <a href={sitePath("/about/")}>About & facility</a>
         <a href={sitePath("/contact/")}>Contact Jackson</a>
       </div>
