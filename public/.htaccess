@@ -1,0 +1,9 @@
+<IfModule mod_headers.c>
+  # HTML documents name hashed JavaScript bundles. Always revalidate those
+  # documents so a visitor never receives a prior release's asset map.
+  <FilesMatch "\.(html|rsc)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+</IfModule>
