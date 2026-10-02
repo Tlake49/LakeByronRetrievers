@@ -2,7 +2,7 @@ import { copyFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const outputDirectory = join(process.cwd(), "dist", "client");
-const routes = ["about", "contact", "merch", "training"];
+const routes = ["about", "contact", "legacy-sires", "merch", "training"];
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH?.replace(/^\/+|\/+$/g, "");
 
 if (basePath) {
