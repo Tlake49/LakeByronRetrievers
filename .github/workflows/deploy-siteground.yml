@@ -10,7 +10,9 @@ permissions:
 
 concurrency:
   group: siteground-production
-  cancel-in-progress: true
+  # Never interrupt rsync once a deployment has begun. Cancelling it mid-copy can
+  # leave an HTML document on the server that references asset files not yet sent.
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
@@ -96,7 +98,7 @@ jobs:
             "$SG_USER@$SG_HOST" \
             "test -d '$SG_REMOTE_PATH' && test -w '$SG_REMOTE_PATH' && printf 'SiteGround destination is ready.\\n'"
 
-      - name: Deploy to SiteGround
+      - name: Upload release files before pages switch
         shell: bash
         env:
           SG_HOST: ${{ secrets.SG_HOST }}
@@ -105,7 +107,32 @@ jobs:
           SG_REMOTE_PATH: ${{ secrets.SG_REMOTE_PATH }}
         run: |
           set -euo pipefail
-          rsync -avz --delete --itemize-changes \
+          # Add every new asset first, while keeping the currently deployed pages
+          # and their asset files intact. This avoids a client ever receiving HTML
+          # whose hashed JavaScript modules have not arrived yet.
+          rsync -avz --itemize-changes \
+            --exclude='.well-known/' \
+            --exclude='.assetsignore' \
+            --exclude='.nojekyll' \
+            --exclude='.vite/' \
+            --exclude='_headers' \
+            --exclude='*.html' \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $SG_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes" \
+            dist/client/ \
+            "$SG_USER@$SG_HOST:$SG_REMOTE_PATH"
+
+      - name: Switch pages and remove retired files
+        shell: bash
+        env:
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_USER: ${{ secrets.SG_USER }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+          SG_REMOTE_PATH: ${{ secrets.SG_REMOTE_PATH }}
+        run: |
+          set -euo pipefail
+          # --delete-delay retires old hashed assets only after all current files
+          # have transferred, keeping each deploy internally consistent.
+          rsync -avz --delete-delay --itemize-changes \
             --exclude='.well-known/' \
             --exclude='.assetsignore' \
             --exclude='.nojekyll' \
