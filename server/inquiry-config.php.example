@@ -1,0 +1,37 @@
+<?php
+declare(strict_types=1);
+
+// Copy this file ON THE SERVER ONLY to:
+// /home/customer/www/lakebyronretrievers.com/private/inquiry-config.php
+// Do not commit the copy and do not place it inside public_html.
+
+return [
+    // Leave false until every value below has been reviewed and the endpoint has
+    // been tested from the production domain.
+    'enabled' => false,
+
+    // Cloudflare Turnstile secret key. This is private: do not paste it into Git,
+    // this repo, or the browser. Retrieve it in Cloudflare > Turnstile > widget.
+    'turnstile_secret' => 'replace-with-turnstile-secret-key',
+
+    // A high-entropy private value used only to hash rate-limit keys. Generate
+    // with: openssl rand -hex 32
+    'rate_limit_secret' => 'replace-with-a-random-64-character-hex-string',
+    'rate_limit_directory' => __DIR__ . '/rate-limits',
+
+    'allowed_origins' => [
+        'https://lakebyronretrievers.com',
+        'https://www.lakebyronretrievers.com',
+    ],
+    'allowed_hostnames' => [
+        'lakebyronretrievers.com',
+        'www.lakebyronretrievers.com',
+    ],
+
+    // Recipient and sender have different roles. The sender must be authorized
+    // by the chosen mail transport; a separate forms@ mailbox is optional.
+    // The visitor address is used only as Reply-To, never as From.
+    'recipient_email' => 'info@lakeslodgesd.com',
+    'from_name' => 'Lake Byron Retrievers',
+    'from_email' => 'replace-with-authorized-sender@example.com',
+];

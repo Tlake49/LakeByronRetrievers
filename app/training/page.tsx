@@ -58,7 +58,7 @@ export default function TrainingPage() {
         <div>
           <p>For owners who want a hunting or competition dog but do not want to manage every stage of early puppy development, Jackson can begin the process from eight weeks old.</p>
           <p>This is distinct from Puppy Head Start: it is a more complete raising-and-starting path focused on building the daily habits, confidence, exposure and foundation a young working dog needs before formal gun-dog training.</p>
-          <button className="button button-dark" type="button" data-inquiry-program="Puppy Raising & Starting">Inquire about puppy raising</button>
+          <a className="button button-dark" href="mailto:info@lakeslodgesd.com?subject=Puppy%20Raising%20%26%20Starting%20Inquiry">Inquire about puppy raising</a>
         </div>
       </section>
       <section className="section training-list">
@@ -70,7 +70,7 @@ export default function TrainingPage() {
               <h2>{program.title}</h2>
               <p className="program-duration">{program.duration}</p>
               <p>{program.intro}</p>
-              <button className="button button-dark program-inquire" type="button" data-inquiry-program={program.title}>Inquire about {program.title}</button>
+              <a className="button button-dark program-inquire" href={`mailto:info@lakeslodgesd.com?subject=${encodeURIComponent(`${program.title} Inquiry`)}`}>Inquire about {program.title}</a>
             </div>
             <ul>
               {program.items.map((item) => <li key={item}>{item}</li>)}
@@ -87,7 +87,7 @@ export default function TrainingPage() {
       </section>
       <section className="orange-cta">
         <div><p className="kicker">Every dog is different</p><h2>Let’s find the right starting point.</h2></div>
-        <button className="button button-dark" type="button" data-inquiry-program="Not sure yet">Ask about availability</button>
+        <a className="button button-dark" href="mailto:info@lakeslodgesd.com?subject=Training%20Availability%20Inquiry">Ask about availability</a>
       </section>
       <SiteFooter />
     </main>

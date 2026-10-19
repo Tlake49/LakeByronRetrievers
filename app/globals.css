@@ -226,6 +226,7 @@ body.inquiry-open { overflow: hidden; }
 .inquiry-fields input::placeholder, .inquiry-fields textarea::placeholder { color: #83796d; opacity: 1; }
 .inquiry-consent { margin-top: 22px; display: grid; grid-template-columns: 22px 1fr; align-items: start; gap: 12px; font-family: Georgia, serif; font-size: .88rem; line-height: 1.55; cursor: pointer; }
 .inquiry-consent input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--orange); }
+.inquiry-turnstile { min-height: 65px; margin-top: 24px; }
 .inquiry-actions { margin-top: 32px; padding-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; border-top: 2px solid var(--ink); }
 .inquiry-actions > span { color: #746b61; font-size: .68rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
 .inquiry-actions .button-primary { border-color: var(--orange); }

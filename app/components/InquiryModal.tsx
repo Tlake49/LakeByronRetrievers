@@ -5,15 +5,22 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
-    grecaptcha?: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    turnstile?: {
+      render: (container: HTMLElement, options: {
+        sitekey: string;
+        action: string;
+        callback: (token: string) => void;
+        "expired-callback": () => void;
+        "error-callback": () => void;
+      }) => string;
+      reset: (widgetId?: string) => void;
+      remove: (widgetId: string) => void;
     };
   }
 }
 
-const endpoint = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT ?? "";
-const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "";
+const endpoint = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT ?? "/api/inquiry.php";
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 const submissionsEnabled = process.env.NEXT_PUBLIC_CONTACT_FORM_ENABLED === "true";
 
 const programs = [
@@ -74,11 +81,33 @@ export function InquiryModal() {
   const formRef = useRef<HTMLFormElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const startedAt = useRef(0);
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetId = useRef<string | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [inquiry, setInquiry] = useState<Inquiry>(emptyInquiry);
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<"idle" | "preview" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [turnstileReady, setTurnstileReady] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+
+  useEffect(() => {
+    if (!submissionsEnabled || !turnstileSiteKey || !turnstileReady || !turnstileContainerRef.current || !window.turnstile) return;
+
+    const widgetId = window.turnstile.render(turnstileContainerRef.current, {
+      sitekey: turnstileSiteKey,
+      action: "training_inquiry",
+      callback: setTurnstileToken,
+      "expired-callback": () => setTurnstileToken(""),
+      "error-callback": () => setTurnstileToken(""),
+    });
+    turnstileWidgetId.current = widgetId;
+
+    return () => {
+      if (turnstileWidgetId.current && window.turnstile) window.turnstile.remove(turnstileWidgetId.current);
+      turnstileWidgetId.current = null;
+    };
+  }, [step, turnstileReady]);
 
   useEffect(() => {
     function openFromTrigger(event: MouseEvent) {
@@ -143,24 +172,21 @@ export function InquiryModal() {
       return;
     }
 
-    if (!submissionsEnabled || !endpoint || !recaptchaSiteKey) {
+    if (!submissionsEnabled || !endpoint || !turnstileSiteKey) {
       setStatus("preview");
-      setMessage("The form experience is ready. Sending will activate after IT adds the secure form endpoint and reCAPTCHA keys.");
+      setMessage("The form experience is ready. Secure delivery will activate after the protected mail service is configured.");
+      setSending(false);
+      return;
+    }
+
+    if (!turnstileToken) {
+      setStatus("error");
+      setMessage("Please complete the security check before sending your inquiry.");
       setSending(false);
       return;
     }
 
     try {
-      const token = await new Promise<string>((resolve, reject) => {
-        if (!window.grecaptcha) {
-          reject(new Error("reCAPTCHA unavailable"));
-          return;
-        }
-        window.grecaptcha.ready(() => {
-          window.grecaptcha?.execute(recaptchaSiteKey, { action: "training_inquiry" }).then(resolve).catch(reject);
-        });
-      });
-
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -184,27 +210,30 @@ export function InquiryModal() {
           goals: clean(inquiry.goals),
           timing: clean(inquiry.timing),
           notes: clean(inquiry.notes),
-          recaptchaToken: token,
-          recaptchaAction: "training_inquiry",
-          submittedFrom: window.location.href,
+          consent: inquiry.consent,
+          website: inquiry.website,
+          turnstileToken,
+          formStartedAt: startedAt.current,
         }),
       });
 
       if (!response.ok) throw new Error("Submission failed");
       setStatus("success");
-      setMessage("Your inquiry is headed to Jackson. We’ll be in touch soon.");
+      setMessage("Your inquiry has been sent to our team. We’ll be in touch soon.");
       setInquiry(emptyInquiry);
+      setTurnstileToken("");
     } catch {
       setStatus("error");
       setMessage("We couldn’t send that inquiry. Please try again or call (605) 221-0649.");
     } finally {
+      if (turnstileWidgetId.current && window.turnstile) window.turnstile.reset(turnstileWidgetId.current);
       setSending(false);
     }
   }
 
   return (
     <>
-      {submissionsEnabled && recaptchaSiteKey ? <Script src={`https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(recaptchaSiteKey)}&trustedtypes=true`} strategy="afterInteractive" /> : null}
+      {submissionsEnabled && turnstileSiteKey ? <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setTurnstileReady(true)} /> : null}
       <dialog
         className="inquiry-dialog"
         ref={dialogRef}
@@ -260,12 +289,13 @@ export function InquiryModal() {
                   <label>Anything else?<input maxLength={300} placeholder="Temperament, routines or questions" value={inquiry.notes} onChange={(event) => update("notes", event.target.value)} /></label>
                 </div>
                 <label className="inquiry-consent"><input required type="checkbox" checked={inquiry.consent} onChange={(event) => update("consent", event.target.checked)} /><span>I agree that Lake Byron Retrievers may contact me about this inquiry. Please do not include payment information or sensitive veterinary records.</span></label>
+                {submissionsEnabled && turnstileSiteKey ? <div className="inquiry-turnstile" ref={turnstileContainerRef} aria-label="Security verification" /> : null}
                 <div className="inquiry-actions"><button className="inquiry-back" type="button" onClick={() => setStep(1)}>← Back</button><button className="button button-primary" type="submit" disabled={sending}>{sending ? "Sending…" : "Send inquiry"}</button></div>
               </fieldset>
             )}
 
             {message ? <p className={`inquiry-status inquiry-status-${status}`} role="status">{message}</p> : null}
-            <p className="inquiry-security-note">Protected by reCAPTCHA when live. Information is used only to respond to this training inquiry.</p>
+            <p className="inquiry-security-note">Protected by Cloudflare Turnstile when live. Information is used only to respond to this training inquiry.</p>
           </form>
         </div>
       </dialog>
