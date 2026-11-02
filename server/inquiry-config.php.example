@@ -31,7 +31,7 @@ return [
     // Recipient and sender have different roles. The sender must be authorized
     // by the chosen mail transport; a separate forms@ mailbox is optional.
     // The visitor address is used only as Reply-To, never as From.
-    'recipient_email' => 'info@lakeslodgesd.com',
+    'recipient_email' => 'info@lakebyronretrievers.com',
     'from_name' => 'Lake Byron Retrievers',
     'from_email' => 'replace-with-authorized-sender@example.com',
 ];

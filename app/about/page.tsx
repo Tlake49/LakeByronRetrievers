@@ -3,8 +3,9 @@ import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 import { sitePath } from "../sitePath";
 
 export const metadata = {
-  title: "About Jackson & the Facility",
-  description: "Meet Jackson Lake and explore the retriever training grounds, kennels and facilities near Lake Byron, South Dakota.",
+  title: "About Our Retriever Trainer & South Dakota Facility",
+  description: "Meet hunting guide and retriever trainer Jackson Lake. See the kennels, water and open training grounds near Lake Byron and Huron, South Dakota.",
+  alternates: { canonical: "/about/" },
 };
 export const dynamic = "force-static";
 

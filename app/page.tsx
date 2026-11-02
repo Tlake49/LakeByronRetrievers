@@ -3,8 +3,9 @@ import { SiteFooter, SiteHeader } from "./components/SiteChrome";
 import { sitePath } from "./sitePath";
 
 export const metadata = {
-  title: "Lake Byron Retrievers | Gun Dog Training in South Dakota",
-  description: "Purpose-built retriever and gun dog training by Jackson Lake near Lake Byron and Huron, South Dakota.",
+  title: "Hunting Dog & Labrador Retriever Training in South Dakota",
+  description: "Labrador retriever and hunting dog training near Huron, South Dakota. Explore puppy raising, gun dog programs, boarding and legacy sire breeding inquiries.",
+  alternates: { canonical: "/" },
 };
 export const dynamic = "force-static";
 
@@ -51,7 +52,7 @@ export default function Home() {
         <div className="section-heading">
           <p className="kicker">Programs / 2026</p>
           <h2>Every good dog starts somewhere.</h2>
-          <p>Training is built around the dog in front of us and the hunter waiting at home—including puppy raising and starting from eight weeks.</p>
+          <p>Our Labrador retriever and hunting dog training is built around the dog in front of us and the hunter waiting at home—including puppy raising and starting from eight weeks.</p>
         </div>
         <div className="program-grid">
           {programs.map((program) => (
@@ -103,7 +104,7 @@ export default function Home() {
         </div>
         <div className="contact-mini">
           <a href="tel:+16052210649">(605) 221-0649</a>
-          <a href="mailto:info@lakeslodgesd.com">info@lakeslodgesd.com</a>
+          <a href="mailto:info@lakebyronretrievers.com">info@lakebyronretrievers.com</a>
           <p>Lake Byron near Huron, South Dakota</p>
         </div>
       </section>

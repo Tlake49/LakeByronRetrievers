@@ -1,8 +1,9 @@
 import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 export const metadata = {
-  title: "Contact",
-  description: "Contact Jackson Lake about retriever training and boarding near Lake Byron, South Dakota.",
+  title: "Contact Jackson Lake About Retriever Training",
+  description: "Ask Jackson Lake about Labrador puppy training, hunting dog programs, boarding, gun dogs for sale or legacy sire breeding inquiries near Huron, South Dakota.",
+  alternates: { canonical: "/contact/" },
 };
 export const dynamic = "force-static";
 
@@ -15,9 +16,9 @@ export default function ContactPage() {
         <div className="contact-primary">
           <p className="kicker">Direct contact</p>
           <a className="big-contact" href="tel:+16052210649">(605) 221-0649</a>
-          <a className="big-contact" href="mailto:info@lakeslodgesd.com">info@lakeslodgesd.com</a>
+          <a className="big-contact" href="mailto:info@lakebyronretrievers.com">info@lakebyronretrievers.com</a>
           <p className="contact-note">Call or email to ask about program fit, timing, current capacity and boarding availability.</p>
-          <a className="button button-primary contact-inquiry-button" href="mailto:info@lakeslodgesd.com?subject=Training%20Inquiry">Start a training inquiry</a>
+          <a className="button button-primary contact-inquiry-button" href="mailto:info@lakebyronretrievers.com?subject=Training%20Inquiry">Start a training inquiry</a>
         </div>
         <aside className="contact-card">
           <p className="label">Training location</p>

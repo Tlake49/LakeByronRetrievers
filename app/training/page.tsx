@@ -1,8 +1,9 @@
 import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 export const metadata = {
-  title: "Training Programs",
-  description: "Puppy raising from eight weeks, Puppy Head Start, Gun Dog, Advanced Gun Dog and boarding programs at Lake Byron Retrievers.",
+  title: "Labrador Puppy & Gun Dog Training in South Dakota",
+  description: "Explore Labrador puppy raising from eight weeks, Puppy Head Start, gun dog and advanced hunting dog training, plus boarding near Huron, South Dakota.",
+  alternates: { canonical: "/training/" },
 };
 export const dynamic = "force-static";
 
@@ -58,7 +59,8 @@ export default function TrainingPage() {
         <div>
           <p>For owners who want a hunting or competition dog but do not want to manage every stage of early puppy development, Jackson can begin the process from eight weeks old.</p>
           <p>This is distinct from Puppy Head Start: it is a more complete raising-and-starting path focused on building the daily habits, confidence, exposure and foundation a young working dog needs before formal gun-dog training.</p>
-          <a className="button button-dark" href="mailto:info@lakeslodgesd.com?subject=Puppy%20Raising%20%26%20Starting%20Inquiry">Inquire about puppy raising</a>
+          <p>Housebreaking is part of Puppy Raising &amp; Starting, alongside daily routines and early field exposure. It is not a separate component of Puppy Head Start.</p>
+          <a className="button button-dark" href="mailto:info@lakebyronretrievers.com?subject=Puppy%20Raising%20%26%20Starting%20Inquiry">Inquire about puppy raising</a>
         </div>
       </section>
       <section className="section training-list">
@@ -70,13 +72,34 @@ export default function TrainingPage() {
               <h2>{program.title}</h2>
               <p className="program-duration">{program.duration}</p>
               <p>{program.intro}</p>
-              <a className="button button-dark program-inquire" href={`mailto:info@lakeslodgesd.com?subject=${encodeURIComponent(`${program.title} Inquiry`)}`}>Inquire about {program.title}</a>
+              <a className="button button-dark program-inquire" href={`mailto:info@lakebyronretrievers.com?subject=${encodeURIComponent(`${program.title} Inquiry`)}`}>Inquire about {program.title}</a>
             </div>
             <ul>
               {program.items.map((item) => <li key={item}>{item}</li>)}
             </ul>
           </article>
         ))}
+      </section>
+      <section className="section gun-dogs-sale">
+        <div>
+          <p className="kicker">Built for the hunt</p>
+          <h2>Gun dogs for sale.</h2>
+        </div>
+        <div className="story-copy">
+          <p>Looking for a dog that is further along? Ask Jackson about available gun dogs and the training, pedigree and titles behind each one.</p>
+          <p>Pricing starts at $4,500 and varies with pedigree, training and titles. Availability and the final price are confirmed for each dog.</p>
+          <p>By request, we can develop a dog for your hunting goals—upland, waterfowl, a combination of both, or guide work.</p>
+          <a className="button button-dark" href="mailto:info@lakebyronretrievers.com?subject=Gun%20Dogs%20for%20Sale%20Inquiry">Ask about available dogs</a>
+        </div>
+      </section>
+      <section className="section faq training-faq">
+        <div><p className="kicker">Training questions</p><h2>Finding the right start.</h2></div>
+        <div className="faq-list">
+          <details><summary>When can a Labrador puppy begin training?</summary><p>Puppy Raising &amp; Starting can begin at eight weeks. Puppy Head Start is designed for dogs three to seven months old. Jackson can help you choose a path based on your dog’s age and experience.</p></details>
+          <details><summary>What is the difference between puppy raising and Puppy Head Start?</summary><p>Puppy Raising &amp; Starting covers daily routines, housebreaking and early field exposure. Puppy Head Start is a shorter introductory program focused on confidence, birds, water, gunfire conditioning and first obedience.</p></details>
+          <details><summary>Can training be tailored to upland or waterfowl hunting?</summary><p>Yes. Gun Dog Training can be shaped around upland, waterfowl or combination hunting goals. Tell Jackson how you plan to hunt and what work your dog has already done.</p></details>
+          <details><summary>Do you have trained gun dogs for sale?</summary><p>Availability changes. Ask Jackson about current dogs, their training, pedigree and titles. Pricing starts at $4,500 and is confirmed for each dog.</p></details>
+        </div>
       </section>
       <section className="contact-prompt program-email-notes">
         <div>
@@ -87,7 +110,7 @@ export default function TrainingPage() {
       </section>
       <section className="orange-cta">
         <div><p className="kicker">Every dog is different</p><h2>Let’s find the right starting point.</h2></div>
-        <a className="button button-dark" href="mailto:info@lakeslodgesd.com?subject=Training%20Availability%20Inquiry">Ask about availability</a>
+        <a className="button button-dark" href="mailto:info@lakebyronretrievers.com?subject=Training%20Availability%20Inquiry">Ask about availability</a>
       </section>
       <SiteFooter />
     </main>

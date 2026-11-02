@@ -1,6 +1,6 @@
 # Inquiry form setup for a future launch
 
-The two-step form remains in `app/components/InquiryModal.tsx`, and its PHP receiver source remains in `server/inquiry.php`. Neither is included in the public site. Training and contact inquiry buttons currently open an email to `info@lakeslodgesd.com`. The browser must never receive the Turnstile secret, rate-limit secret, or mail credentials.
+The two-step form remains in `app/components/InquiryModal.tsx`, and its PHP receiver source remains in `server/inquiry.php`. Neither is included in the public site. Training and contact inquiry buttons currently open an email to `info@lakebyronretrievers.com`, which Cloudflare routes to the verified `info@lakeslodgesd.com` inbox. The browser must never receive the Turnstile secret, rate-limit secret, or mail credentials.
 
 ## Controls prepared in the receiver source
 
@@ -9,7 +9,7 @@ The two-step form remains in `app/components/InquiryModal.tsx`, and its PHP rece
 - Newlines are rejected in every user-controlled mail field, preventing mail-header injection. Visitor input is rendered only as plain text; no HTML, commands, database queries, uploads, or URLs are executed.
 - A concealed honeypot and a minimum completion time screen basic automation.
 - Separate rate limits are keyed with an HMAC of IP and normalized email, so the stored limiter files do not contain either value in clear text. The IP limit is six per hour and twenty per day; the email limit is three per hour and eight per day.
-- The receiving mailbox is fixed to `info@lakeslodgesd.com`; the visitor email is only `Reply-To`. Internal failures return generic messages and logs do not record form contents, tokens, or email addresses.
+- The future form recipient is fixed in private server configuration; the example uses `info@lakebyronretrievers.com`, which Cloudflare routes to `info@lakeslodgesd.com`. The visitor email is only `Reply-To`. Internal failures return generic messages and logs do not record form contents, tokens, or email addresses.
 
 ## One-time SiteGround configuration
 
@@ -27,7 +27,7 @@ The two-step form remains in `app/components/InquiryModal.tsx`, and its PHP rece
    chmod 600 /home/customer/www/lakebyronretrievers.com/private/inquiry-config.php
    ```
 
-4. Choose and verify the mail sender. `info@lakeslodgesd.com` is already the recipient. The exact address `forms@lakebyronretrievers.com` is optional. However, [SiteGround says its sendmail service needs an existing email address](https://www.siteground.com/kb/do-i-need-a-valid-email-account-to-use-sendmail), so the current PHP `mail()` handler needs a valid sender account it can use. Put that account in `from_email` and verify SPF/DKIM/DMARC and delivery with IT. If `info@lakeslodgesd.com` is hosted elsewhere and you want to send as it, the present handler must be changed to its authenticated SMTP or API transport first; merely entering SMTP credentials in the config will not make it use SMTP.
+4. Choose and verify the mail sender. The example recipient is `info@lakebyronretrievers.com`; its Cloudflare routing rule is only for receiving and does **not** authorize sending as that address. The current PHP `mail()` handler needs a valid sender account authorized for the chosen transport. Put that account in `from_email` and verify SPF/DKIM/DMARC and delivery with IT. If IT supplies authenticated SMTP or an email API, update the handler to use that transport first; merely entering credentials in the config will not make PHP `mail()` use them. If SiteGround locally intercepts mail to the domain, use the verified downstream `info@lakeslodgesd.com` recipient instead after testing.
 5. After steps 1–4 are complete, move `server/inquiry.php` to `public/api/inquiry.php`, restore the `InquiryModal` import and render in `app/layout.tsx`, and replace the inquiry `mailto:` links with form triggers. Then set `NEXT_PUBLIC_CONTACT_FORM_ENABLED` to `"true"` in `.github/workflows/deploy-siteground.yml`, commit, and deploy. The live server configuration remains outside Git and survives deployments.
 
 ## Operational safety

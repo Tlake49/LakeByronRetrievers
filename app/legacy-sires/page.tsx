@@ -3,12 +3,14 @@ import { PageHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 import { sitePath } from "../sitePath";
 
 export const metadata = {
-  title: "Legacy Sires",
-  description: "Explore the Lake Byron Retrievers legacy sire collection and inquire about frozen semen availability for your breeding program.",
+  title: "Legacy Labrador Retriever Sires & Breeding Inquiries",
+  description: "Explore Labrador retriever legacy sire pedigrees, field records and health details. Contact Lake Byron Retrievers to discuss frozen-semen availability and breeding fit.",
+  alternates: { canonical: "/legacy-sires/" },
 };
 export const dynamic = "force-static";
 
 type Sire = {
+  id?: string;
   name: string;
   image?: string;
   alt?: string;
@@ -36,6 +38,16 @@ const sires: Sire[] = [
     record: [["AKC registration", "SR08371202"], ["FT champion points", "61"]],
     health: ["OFA hips: LR-153051E25M-PI (Excellent)", "Eye CERF/CAER: LR-43078 (Normal)", "OFA elbow: LR-EL27583M25-PI (Normal)", "CNM: LR-CNM05-028-M-PI", "EIC: Clear (per owner)", "Thyroid: LR-TH189/25M-PI (Normal)"],
     note: "A 2008 National Field Champion and Field Champion whose legacy carries deep retriever field-trial influence.",
+  },
+  {
+    id: "chance",
+    name: "FC AFC CFC CAFC MHR GMPR Jazztime Last Chance v Pekisko",
+    image: "/images/sires/chance.jpg",
+    alt: "Chance, a black Labrador retriever, sitting on grass",
+    identity: [["Call name", "Chance"], ["Gender", "Male"], ["Color", "BLK"], ["Coat genotype", "Black — hidden yellow — EeBB"], ["Whelp date", "2/3/2003"], ["Date of death", "6/30/2015"], ["Owner", "Larry and Anna Calvert"], ["Website", "www.jazztimelabs.com"]],
+    record: [["AKC registration", "SR10335801"], ["FT champion points", "110"], ["Derby points", "12"]],
+    health: ["OFA hips: LR-149363G24M-PI (Good)", "Eye CERF/CAER: LR-36363", "CNM: LR-CNM06-037-M-PIV (Clear)", "EIC: Carrier", "PRA: 07-4153 (Normal)", "Cardiac: LR-CA1359/19M/C-PI"],
+    note: "Chance’s field-trial record and documented health information offer breeders a detailed starting point for evaluating a potential pairing.",
   },
   {
     name: "FC AFC Painter’s Major Motion",
@@ -92,24 +104,24 @@ export default function LegacySiresPage() {
         <div className="story-copy">
           <p>Lake Byron Retrievers maintains a select frozen-semen collection from influential retrievers of past generations. Each pairing deserves thoughtful consideration—pedigree, health history, goals and fit all matter.</p>
           <p>If you are interested in using a legacy sire, call Jackson or send an email with your female’s registered name, pedigree, health clearances, breeding goals and anticipated timing. We will confirm current availability and discuss whether the match makes sense.</p>
-          <div className="legacy-contact"><a href="tel:+16052210649">(605) 221-0649</a><a href="mailto:info@lakeslodgesd.com?subject=Legacy%20Sire%20Breeding%20Inquiry">info@lakeslodgesd.com</a></div>
+          <div className="legacy-contact"><a href="tel:+16052210649">(605) 221-0649</a><a href="mailto:info@lakebyronretrievers.com?subject=Legacy%20Sire%20Breeding%20Inquiry">info@lakebyronretrievers.com</a></div>
         </div>
       </section>
 
       <section className="legacy-list" aria-label="Legacy sire collection">
         {sires.map((sire, index) => (
-          <article className={`sire-profile ${index % 2 ? "sire-profile-reverse" : ""}`} key={sire.name}>
+          <article className={`sire-profile ${index % 2 ? "sire-profile-reverse" : ""}`} id={sire.id} key={sire.name}>
             <SirePhoto sire={sire} />
             <div className="sire-copy">
               <p className="kicker">Legacy sire {String(index + 1).padStart(2, "0")}</p>
               <h2>{sire.name}</h2>
               <p className="sire-note">{sire.note}</p>
               <dl className="sire-details">
-                {sire.identity.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+                {sire.identity.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{label === "Website" ? <a href="https://www.jazztimelabs.com/" target="_blank" rel="noopener noreferrer">{value}</a> : value}</dd></div>)}
                 {sire.record.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
               </dl>
               <div className="sire-health"><p className="label">Recorded health information</p><ul>{sire.health.map((item) => <li key={item}>{item}</li>)}</ul></div>
-              <a className="button sire-inquire" href={`mailto:info@lakeslodgesd.com?subject=${encodeURIComponent(`Legacy Sire Inquiry: ${sire.name}`)}`}>Inquire about this sire</a>
+              <a className="button sire-inquire" href={`mailto:info@lakebyronretrievers.com?subject=${encodeURIComponent(`Legacy Sire Inquiry: ${sire.name}`)}&body=${encodeURIComponent(`I am interested in ${sire.name}.\n\nMy name:\nPhone number:\nLocation:\nFemale's registered name:\nPedigree link or details:\nOFA and other health clearances:\nImmediate breeding or buy and store:\nAnticipated timing:\nBreeding goals:\n`)}`}>Inquire about this sire</a>
             </div>
           </article>
         ))}
