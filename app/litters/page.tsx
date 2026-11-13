@@ -13,6 +13,21 @@ const email = "info@lakebyronretrievers.com";
 const subject = encodeURIComponent("Brooks × Pete Upcoming Litter Inquiry");
 const body = encodeURIComponent("Hello Lake Byron Retrievers,\n\nI would like to learn more about the upcoming Brooks × Pete litter.\n\nMy name:\nPhone number:\nLocation:\nWhat I hope to do with my dog:\nQuestions:\n");
 
+const brooksClearScreens = [
+  "Centronuclear Myopathy (CNM)", "Copper Toxicosis — ATP7B", "Copper Toxicosis — ATP7A",
+  "Degenerative Myelopathy (DM)", "Exercise-Induced Collapse (EIC)",
+  "Hereditary Nasal Parakeratosis (HNPK)", "Hyperuricosuria (HUU)",
+  "Macular Corneal Dystrophy (MCD)", "Narcolepsy", "Progressive Retinal Atrophy (prcd)",
+  "Pyruvate Kinase Deficiency", "Skeletal Dysplasia 2 (SD2)", "Achromatopsia",
+  "Alexander Disease", "Canine Elliptocytosis", "Congenital Dyserythropoietic Anemia and Polymyopathy",
+  "Congenital Myasthenic Syndrome (CMS)", "Ehlers-Danlos Syndrome (EDS)",
+  "Golden Retriever Progressive Retinal Atrophy 2 (GR-PRA2)",
+  "Laryngeal Paralysis and Polyneuropathy", "Muscular Dystrophy-Dystroglycanopathy",
+  "Myotonia Congenita", "X-linked Myotubular Myopathy (XL-MTM)",
+  "Progressive Retinal Atrophy (crd4/cord1)", "Stargardt Disease",
+  "Ullrich-like Congenital Muscular Dystrophy",
+];
+
 const parents = [
   {
     role: "Sire / 01",
@@ -27,11 +42,11 @@ const parents = [
   {
     role: "Dam / 02",
     callName: "Brooks",
-    name: "HR Bohamidi’s Bird Mouth Brooks",
+    name: "HR Bouhamidi’s Bird Mouth Brooks",
     image: "/images/litters/brooks.webp",
     alt: "Brooks, a yellow Labrador retriever, sitting outdoors with hunting retriever ribbons",
     imageClass: "litter-parent-brooks",
-    clearances: ["OFA hips · Excellent", "OFA elbows · Normal", "OFA evaluations · October 2026"],
+    clearances: ["OFA hips · Excellent", "OFA elbows · Normal", "Embark DNA screen · November 12, 2026"],
     pedigree: ["CPR SHR FSR Dakota’s One Shot One Kill", "RGD Rushmore’s Gonna Rock You DJ"],
   },
 ];
@@ -81,6 +96,29 @@ export default function LittersPage() {
               <div className="litter-stat-list">
                 {parent.clearances.map((clearance) => <p key={clearance}>{clearance}</p>)}
               </div>
+              {parent.callName === "Brooks" && (
+                <div className="litter-dna" aria-label="Brooks genetic test results">
+                  <p className="kicker">Brooks / DNA report</p>
+                  <h3>Inside her genetics.</h3>
+                  <p className="litter-dna-lede">An Embark Canine Genetic Health Screen dated November 12, 2026 reports Brooks clear on 26 screened conditions. It also reports <strong>one variant</strong> for the RETN copper-toxicosis–attenuating test; this is not a “clear” result.</p>
+                  <div className="litter-dna-facts">
+                    <div><strong>Clear</strong><span>CNM · EIC · HNPK · prcd-PRA · DM · SD2</span></div>
+                    <div><strong>1 variant</strong><span>Copper Toxicosis (Attenuating) · RETN</span></div>
+                    <div><strong>20%</strong><span>Genetic coefficient of inbreeding</span></div>
+                  </div>
+                  <details className="litter-pedigree litter-dna-details">
+                    <summary>Explore the full DNA findings <span aria-hidden="true">+</span></summary>
+                    <div className="litter-dna-expanded">
+                      <p><strong>26 health screens reported clear:</strong></p>
+                      <ul>{brooksClearScreens.map((screen) => <li key={screen}>{screen}</li>)}</ul>
+                      <p><strong>Additional result:</strong> Copper Toxicosis (Attenuating), RETN Exon 2 — CT, 1 variant.</p>
+                      <p><strong>Genetic diversity:</strong> coefficient of inbreeding 20%; MHC Class II DLA-DRB1: no diversity; DLA-DQA1/DQB1: low diversity.</p>
+                      <p><strong>Coat genetics:</strong> E locus ee (yellow coat), K locus KBKB, B locus BB, D locus DD. The report also lists a likely short or mid-length, straight coat and likely heavy or seasonal shedding.</p>
+                      <p className="litter-dna-source">Source: Embark DNA Test Report for Bouhamidi’s Bird Mouth Brooks, November 12, 2026. Genetic screening is one part of evaluating a breeding; ask Jackson for the full records and discuss any result with your veterinarian.</p>
+                    </div>
+                  </details>
+                </div>
+              )}
               <details className="litter-pedigree">
                 <summary>View immediate pedigree <span aria-hidden="true">+</span></summary>
                 <div><p>By {parent.pedigree[0]}</p><p>Out of {parent.pedigree[1]}</p></div>
