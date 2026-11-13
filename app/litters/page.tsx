@@ -100,10 +100,9 @@ export default function LittersPage() {
                 <div className="litter-dna" aria-label="Brooks genetic test results">
                   <p className="kicker">Brooks / DNA report</p>
                   <h3>Inside her genetics.</h3>
-                  <p className="litter-dna-lede">An Embark Canine Genetic Health Screen dated November 12, 2026 reports Brooks clear on 26 screened conditions. It also reports <strong>one variant</strong> for the RETN copper-toxicosis–attenuating test; this is not a “clear” result.</p>
+                  <p className="litter-dna-lede">Brooks’s Embark Canine Genetic Health Screen, dated November 12, 2026, reports 26 of 27 screened conditions clear. Explore the full findings for the complete results.</p>
                   <div className="litter-dna-facts">
                     <div><strong>Clear</strong><span>CNM · EIC · HNPK · prcd-PRA · DM · SD2</span></div>
-                    <div><strong>1 variant</strong><span>Copper Toxicosis (Attenuating) · RETN</span></div>
                     <div><strong>20%</strong><span>Genetic coefficient of inbreeding</span></div>
                   </div>
                   <details className="litter-pedigree litter-dna-details">
